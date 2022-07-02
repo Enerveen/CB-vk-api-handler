@@ -9,7 +9,9 @@ name: CI
 jobs:
   deploy_build:
     name: Build & deploy
+
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
