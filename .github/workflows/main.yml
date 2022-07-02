@@ -28,7 +28,7 @@ jobs:
         run: yarn install
 
       - name: Setup ssh key
-        run: set -eu && mkdir "$HOME/.ssh" && echo "${{ secrets.REMOTE_SSH_KEY }}" > "$HOME/.ssh/key" && chmod 600 "$HOME/.ssh/key"
+        run: set -eu && mkdir "$HOME/.ssh" && echo "${{ secrets.REMOTE_SSH_KEY }}" > "$HOME/.ssh/key.pem" && chmod 600 "$HOME/.ssh/key.pem"
 
       - name: Build
         run: yarn build
