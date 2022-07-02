@@ -34,4 +34,4 @@ jobs:
         run: yarn build
 
       - name: Deploy
-        run: ssh -i ${{ secrets.REMOTE_SSH_KEY }} ubuntu@ec2-35-157-12-196.eu-central-1.compute.amazonaws.com
+        run: ssh -i "$HOME/.ssh/key" ubuntu@ec2-35-157-12-196.eu-central-1.compute.amazonaws.com
