@@ -1,0 +1,31 @@
+name: CI
+"on":
+  push:
+    branches:
+      - main
+    paths:
+      - src/**
+  workflow_dispatch:
+jobs:
+  deploy_build:
+    name: Build & deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Use Node 17
+        uses: actions/setup-node@v1
+        with:
+          node-version: 17
+
+      - name: Install deps and build (with cache)
+        uses: bahmutov/npm-install@v1
+
+      - name: Setup ssh key
+        run: set -eu && mkdir "$HOME/.ssh" && echo "${{ secrets.REMOTE_SSH_KEY }}" > "$HOME/.ssh/key" && chmod 600 "$HOME/.ssh/key"
+
+      - name: Build
+        run: yarn build
+      - name: Deploy
+      - run: cd build && rsync -e "ssh -p 20022 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . ec2-35-157-12-196.eu-central-1.compute.amazonaws.com:/home/ubuntu/CB-vk-api-handler

@@ -4,6 +4,7 @@
   "main": "src/app.ts",
   "scripts": {
     "local": "nodemon src/app.ts",
+    "start": "node build/app.js",
     "build": "rm -rf build/ && tsc"
   },
   "license": "MIT",
@@ -13,7 +14,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
-    "yuve-shared": "^0.1.1"
+    "yuve-shared": "^0.1.6"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

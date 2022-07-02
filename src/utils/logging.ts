@@ -1,4 +1,4 @@
-import log from "yuve-shared/dist/logger/logger";
+import log from "yuve-shared/build/logger/logger";
 import {NextFunction, Request, Response} from "express";
 
 
