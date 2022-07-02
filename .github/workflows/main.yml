@@ -31,4 +31,4 @@ jobs:
         run: yarn build
 
       - name: Deploy
-      - run: cd build && rsync -e "ssh -p 20022 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . ec2-35-157-12-196.eu-central-1.compute.amazonaws.com:/home/ubuntu/CB-vk-api-handler
+        run: cd build && rsync -e "ssh -p 20022 -i $HOME/.ssh/key -o StrictHostKeyChecking=no" --archive --compress --delete . ec2-35-157-12-196.eu-central-1.compute.amazonaws.com:/home/ubuntu/CB-vk-api-handler
