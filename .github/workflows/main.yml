@@ -43,9 +43,9 @@ jobs:
     steps:
       - name: Export environment variables
         uses: appleboy/ssh-action@master
-          with:
-            host: ${{ secrets.ENDPOINT_HOST }}
-            username: ${{ secrets.ENDPOINT_USER }}
-            key: ${{ secrets.REMOTE_SSH_KEY }}
-            script: whoami
+        with:
+          host: ${{ secrets.ENDPOINT_HOST }}
+          username: ${{ secrets.ENDPOINT_USER }}
+          key: ${{ secrets.REMOTE_SSH_KEY }}
+          script: whoami
 
