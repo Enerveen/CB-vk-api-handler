@@ -53,19 +53,19 @@ jobs:
             . ~/.nvm/nvm.sh
             nvm install node
       - name: Install yarn, dependencies and run app
-          uses: appleboy/ssh-action@master
-          with:
-            host: ${{ secrets.ENDPOINT_HOST }}
-            username: ${{ secrets.ENDPOINT_USER }}
-            key: ${{ secrets.REMOTE_SSH_KEY }}
-            script_stop: true
-            script: |
-              pkill node
-              cd ${{ secrets.DESTINATION_DIR }}
-              export NVM_DIR="$HOME/.nvm"
-              [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-              [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-              export VK_SERVICE_TOKEN=${{ secrets.VK_SERVICE_TOKEN }}
-              yarn install
-              yarn start > app.out.log 2> app.err.log < /dev/null &
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.ENDPOINT_HOST }}
+          username: ${{ secrets.ENDPOINT_USER }}
+          key: ${{ secrets.REMOTE_SSH_KEY }}
+          script_stop: true
+          script: |
+            pkill node
+            cd ${{ secrets.DESTINATION_DIR }}
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+            export VK_SERVICE_TOKEN=${{ secrets.VK_SERVICE_TOKEN }}
+            yarn install
+            yarn start > app.out.log 2> app.err.log < /dev/null &
 
