@@ -58,8 +58,9 @@ jobs:
           host: ${{ secrets.ENDPOINT_HOST }}
           username: ${{ secrets.ENDPOINT_USER }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
-          script_stop: true
+          script_stop: false
           script: |
+            sudo chmod -R 777 ${{ secrets.DESTINATION_DIR }}
             pkill node
             cd ${{ secrets.DESTINATION_DIR }}
             export NVM_DIR="$HOME/.nvm"
