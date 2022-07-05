@@ -42,6 +42,4 @@ jobs:
             host: ${{ secrets.ENDPOINT_HOST }}
             username: ${{ secrets.ENDPOINT_USER }}
             key: ${{ secrets.REMOTE_SSH_KEY }}
-            script: |
-              whoami
-              ls -al
+            script: whoami
