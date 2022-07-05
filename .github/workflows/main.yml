@@ -61,7 +61,7 @@ jobs:
           script_stop: false
           script: |
             sudo chmod -R 777 ${{ secrets.DESTINATION_DIR }}
-            pkill node
+            fuser -k ${{ secrets.APP_PORT }}/tcp
             cd ${{ secrets.DESTINATION_DIR }}
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -69,5 +69,6 @@ jobs:
             npm install --global yarn
             yarn install
             export VK_SERVICE_TOKEN=${{ secrets.VK_SERVICE_TOKEN }}
+            export APP_PORT=${{ secrets.APP_PORT }}
             yarn start > app.out.log 2> app.err.log < /dev/null &
 
