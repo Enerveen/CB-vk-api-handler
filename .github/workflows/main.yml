@@ -55,5 +55,5 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-            export VK_SERVICE_TOKEN=${{ VK_SERVICE_TOKEN }}
+            export VK_SERVICE_TOKEN=${{ secrets.VK_SERVICE_TOKEN }}
             node app.js > app.out.log 2> app.err.log < /dev/null &
