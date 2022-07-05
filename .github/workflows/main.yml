@@ -49,6 +49,9 @@ jobs:
           key: ${{ secrets.REMOTE_SSH_KEY }}
           script_stop: true
           script: |
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+            . ~/.nvm/nvm.sh
+            nvm install node
             sudo chmod -R 777 ${{ secrets.DESTINATION_DIR }}
             cd ${{ secrets.DESTINATION_DIR }}
             pkill node
