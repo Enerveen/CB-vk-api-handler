@@ -34,4 +34,14 @@ jobs:
         run: yarn build
 
       - name: Deploy
-        run: cd build && rsync -e "ssh -p 22 -i $HOME/.ssh/key.pem -o StrictHostKeyChecking=no" --archive --compress --delete . ubuntu@ec2-35-157-12-196.eu-central-1.compute.amazonaws.com:/home/ubuntu/CB-vk-api-handler
+        run: cd build && rsync -e "ssh -p 22 -i $HOME/.ssh/key.pem -o StrictHostKeyChecking=no" --archive --compress --delete . ${{ secrets.ENDPOINT_USER }}@${{ secrets.ENDPOINT_HOST }}:/home/ubuntu/CB-vk-api-handler
+
+      - name: Environment variables export
+        uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.ENDPOINT_HOST }}
+            username: ${{ secrets.ENDPOINT_USER }}
+            key: ${{ secrets.REMOTE_SSH_KEY }}
+            script: |
+              whoami
+              ls -al
