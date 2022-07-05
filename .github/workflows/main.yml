@@ -36,10 +36,15 @@ jobs:
       - name: Deploy
         run: cd build && rsync -e "ssh -p 22 -i $HOME/.ssh/key.pem -o StrictHostKeyChecking=no" --archive --compress --delete . ${{ secrets.ENDPOINT_USER }}@${{ secrets.ENDPOINT_HOST }}:/home/ubuntu/CB-vk-api-handler
 
-      - name: Environment variables export
-        uses: appleboy/ssh-action@master
-          with:
-            host: ${{ secrets.ENDPOINT_HOST }}
-            username: ${{ secrets.ENDPOINT_USER }}
-            key: ${{ secrets.REMOTE_SSH_KEY }}
-            script: whoami
+  run_deployed_app:
+    name: Export environment variables & launch app remotely
+    runs-on: ubuntu-latest
+    needs: deploy_build
+    steps:
+      - name: Export environment variables
+          uses: appleboy/ssh-action@master
+            with:
+              host: ${{ secrets.ENDPOINT_HOST }}
+              username: ${{ secrets.ENDPOINT_USER }}
+              key: ${{ secrets.REMOTE_SSH_KEY }}
+              script: whoami
