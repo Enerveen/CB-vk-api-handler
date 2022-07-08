@@ -1,6 +1,5 @@
 *.log
 node_modules
-dist
 .idea
 .env
 yarn.lock
