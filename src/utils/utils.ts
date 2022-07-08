@@ -2,6 +2,7 @@ import axios from "axios";
 import {Item, VkApiData, VkResponse} from "../types";
 import config from "../config";
 import log from "./logging";
+import runWithErrorHandler from "yuve-shared/build/runWithErrorHandler/runWithErrorHandler";
 
 enum AttachmentTypes {
     photo = 'photo',
@@ -23,7 +24,6 @@ export const reformatResponse = (data: VkApiData, edgeTimestamp: string) => {
 
     const {response}: { response: VkResponse } = data || {}
     const {items}: { items: Item[] } = response || {}
-    console.log(JSON.stringify(items))
     const result = items?.filter(({date}: Item) => Number(date) > Number(edgeTimestamp))
         .map(({text, attachments, owner_id, id}: Item) => ({
             text: text,
@@ -56,17 +56,13 @@ export const reformatResponse = (data: VkApiData, edgeTimestamp: string) => {
 export const handleRecentPostsRequest = async (domainsList: string[], timestamp: string, count: string) => {
 
     const recentPostsRequests: object[] = await domainsList.map(async (domain: string) => {
-        try {
-            const {data} = await api.get('api.vk.com/method/wall.get', {
+            const {data} = await runWithErrorHandler(() => api.get('api.vk.com/method/wall.get', {
                 access_token: config.VK_SERVICE_TOKEN,
                 v: config.VK_API_VERSION,
                 domain,
                 count
-            })
+            }))
             return reformatResponse(data, timestamp)
-        } catch (error) {
-            log.error(error as string)
-        }
 
     })
 

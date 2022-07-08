@@ -14,7 +14,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
-    "yuve-shared": "^0.1.6"
+    "yuve-shared": "^0.1.7"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
