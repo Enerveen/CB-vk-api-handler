@@ -62,6 +62,7 @@ export const handleRecentPostsRequest = async (domainsList: string[], timestamp:
                 domain,
                 count
             })) || { data: [] }
+            log.request(`Request sent to VK API. Domain is ${domain}, response: `, data)
             return reformatResponse(data, timestamp)
 
     })
