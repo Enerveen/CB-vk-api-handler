@@ -24,10 +24,7 @@ const getWallPosts = async (req: Request, res: Response) => {
         log.info(`Posts limit per source not provided, set by default to ${limit}`)
     }
 
-
-    const domainsList: string[] = (domains as string).split(',')
-
-    const resultData = await handleRecentPostsRequest(domainsList, timestamp as string, limit as string)
+    const resultData = await handleRecentPostsRequest(domains as string, timestamp as string, limit as string)
 
     return res.status(200).json(resultData)
 }

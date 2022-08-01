@@ -1,8 +1,9 @@
 import axios from "axios";
-import {Item, VkApiData, VkResponse} from "../types";
+import {Item, VkResponseItem} from "../types";
 import config from "../config";
 import log from "./logging";
 import runWithErrorHandler from "yuve-shared/build/runWithErrorHandler/runWithErrorHandler";
+import getVkScriptCode from "../vkScript";
 
 enum AttachmentTypes {
     photo = 'photo',
@@ -20,10 +21,9 @@ export const getTimestampOfNDaysBefore = (daysDiff: number): string => {
     return (+date.setDate(date.getDate() - daysDiff)).toString().substr(0, 10)
 }
 
-export const reformatResponse = (data: VkApiData, edgeTimestamp: string) => {
+export const reformatResponseItem = (responseItem: VkResponseItem, edgeTimestamp: string) => {
 
-    const {response}: { response: VkResponse } = data || {}
-    const {items}: { items: Item[] } = response || {}
+    const {items}: { items: Item[] } = responseItem || {}
     const result = items?.filter(({date}: Item) => Number(date) > Number(edgeTimestamp))
         .map(({text, attachments, owner_id, id}: Item) => ({
             text: text,
@@ -53,23 +53,18 @@ export const reformatResponse = (data: VkApiData, edgeTimestamp: string) => {
     return result || []
 }
 
-export const handleRecentPostsRequest = async (domainsList: string[], timestamp: string, count: string) => {
+export const handleRecentPostsRequest = async (domains: string, timestamp: string, count: string) => {
 
-    const recentPostsRequests: object[] = await domainsList.map(async (domain: string) => {
-            const {data} = await runWithErrorHandler(() => api.get('api.vk.com/method/wall.get', {
-                access_token: config.VK_SERVICE_TOKEN,
-                v: config.VK_API_VERSION,
-                domain,
-                count
-            })) || { data: [] }
-            log.request(`Request sent to VK API. Domain is ${domain}, response: `, data)
-            return reformatResponse(data, timestamp)
+    const {data: {response}} = await runWithErrorHandler(() => api.get('api.vk.com/method/execute', {
+        access_token: config.VK_SERVICE_TOKEN,
+        v: config.VK_API_VERSION,
+        code: getVkScriptCode(domains, count)
+    })) || { data: {response: []} }
+    log.request(`Request sent to VK API. Domains are ${domains}, response: `, response)
+    const recentPosts = response.map((item: VkResponseItem) => reformatResponseItem(item, timestamp)).flat()
 
-    })
-
-    const recentPosts: object[] = (await Promise.all(recentPostsRequests)).flat()
     if (!recentPosts.length) {
-        log.info('No recent posts for the last requests')
+        log.info('No recent posts for the last request')
     }
     return recentPosts
 }

@@ -1,8 +1,8 @@
 export interface VkApiData {
-    response: VkResponse
+    response: VkResponseItem[]
 }
 
-export interface VkResponse {
+export interface VkResponseItem {
     items: Item[]
 }
 
