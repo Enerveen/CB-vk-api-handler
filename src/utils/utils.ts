@@ -21,7 +21,7 @@ export const getTimestampOfNDaysBefore = (daysDiff: number): string => {
     return (+date.setDate(date.getDate() - daysDiff)).toString().substr(0, 10)
 }
 
-export const reformatResponseItem = (responseItem: VkResponseItem, edgeTimestamp: string) => {
+export const reformatResponseItem = (responseItem: VkResponseItem, edgeTimestamp: string, index: number, domainsList: string[]) => {
 
     const {items}: { items: Item[] } = responseItem || {}
     const result = items?.filter(({date}: Item) => Number(date) > Number(edgeTimestamp))
@@ -61,7 +61,8 @@ export const handleRecentPostsRequest = async (domains: string, timestamp: strin
         code: getVkScriptCode(domains, count)
     })) || { data: {response: []} }
     log.request(`Request sent to VK API. Domains are ${domains}, response: `, response)
-    const recentPosts = response.map((item: VkResponseItem) => reformatResponseItem(item, timestamp)).flat()
+    const recentPosts = (response || []).map((item: VkResponseItem, index: number) =>
+        reformatResponseItem(item, timestamp, index, domains.split(','))).flat()
 
     if (!recentPosts.length) {
         log.info('No recent posts for the last request')
