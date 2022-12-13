@@ -1,11 +1,12 @@
 import {Request, Response} from 'express';
 import {getTimestampOfNDaysBefore, handleRecentPostsRequest} from "../utils/utils";
 import log from "../utils/logging";
+import config from "../config";
 
 
 const getWallPosts = async (req: Request, res: Response) => {
 
-    let {domains, timestamp, limit} = req.query
+    let {domains, timestamp, limit, apiKey} = req.query
 
     if (!domains) {
         log.info('Domains list not provided')
@@ -24,7 +25,16 @@ const getWallPosts = async (req: Request, res: Response) => {
         log.info(`Posts limit per source not provided, set by default to ${limit}`)
     }
 
-    const resultData = await handleRecentPostsRequest(domains as string, timestamp as string, limit as string)
+    if (!apiKey) {
+        apiKey = config.VK_SERVICE_TOKEN
+    }
+
+    const resultData = await handleRecentPostsRequest(
+        domains as string,
+        timestamp as string,
+        limit as string,
+        apiKey as string
+    )
 
     return res.status(200).json(resultData)
 }
