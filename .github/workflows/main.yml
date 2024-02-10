@@ -5,6 +5,8 @@ name: CI
       - main
     paths:
       - src/**
+  schedule:
+    - cron: '0 0 */3 * *'    
   workflow_dispatch:
 jobs:
   deploy_build:
